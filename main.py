@@ -1,13 +1,18 @@
 from rich.console import Console
 #from rich import inspect
+import platform
 from pathlib import Path
 import os
 import json
 import argparse
-from getch import getch
 import youtube_dl
 from get_channels import retrieve_youtube_subscriptions
 from print_logo import print_logo
+
+if platform.system() == 'Windows':
+	import msvcrt
+else:
+	from getch import getch
 
 parser = argparse.ArgumentParser()
 parser.add_argument('-i', '--input', action='store', type=str, 
@@ -25,7 +30,7 @@ download_all = args.all
 
 c = Console()
 ydl_opts = {
-    'format': 'best'
+	'format': 'best'
 }
 
 print_logo()
@@ -45,15 +50,26 @@ else:
 			curr_channel += 1
 			c.print(f'[dim][{curr_channel}/{len(all_channels)}]:[/dim] {ch["title"]} [cyan]\[y/n]')
 			while True:
-				key = getch()
-				if key == "y":
-					ch['download'] = True
-					break
-				elif key == "n":
-					ch['download'] = False
-					break
+				if platform.system() == 'Windows':
+					key = str(msvcrt.getch())
+					if key == "b'y'":
+						ch['download'] = True
+						break
+					elif key == "b'n'":
+						ch['download'] = False
+						break
+					else:
+						c.print('Press "y" or "n"', style='yellow')
 				else:
-					c.print('Press "y" or "n"', style='orange')
+					key = getch()
+					if key == "y":
+						ch['download'] = True
+						break
+					elif key == "n":
+						ch['download'] = False
+						break
+					else:
+						c.print('Press "y" or "n"', style='yellow')
 
 	c.print('All done! 🎉')
 	c.print('Saving to download_list.json...', style='italic')
