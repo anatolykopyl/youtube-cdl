@@ -7,6 +7,7 @@ import argparse
 from getch import getch
 import youtube_dl
 from get_channels import retrieve_youtube_subscriptions
+from print_logo import print_logo
 
 parser = argparse.ArgumentParser()
 parser.add_argument('-i', '--input', action='store', type=str, 
@@ -27,6 +28,8 @@ ydl_opts = {
     'format': 'best'
 }
 
+print_logo()
+
 if json_input:
 	f = open(json_input, "r", encoding='utf-8')
 	all_channels = json.loads(f.read())
@@ -34,8 +37,7 @@ if json_input:
 else:
 	all_channels = retrieve_youtube_subscriptions()
 	curr_channel = 0
-	c.print(f'You will be prompted if you want to download \
-	a channel for each of your subscriptions. (total {len(all_channels)})')
+	c.print(f'You will be prompted if you want to download a channel for each of your subscriptions. (total {len(all_channels)})', style='bold')
 	for ch in all_channels:
 		if download_all:
 			ch['download'] = True
