@@ -128,16 +128,3 @@ def parse_youtube_subscriptions(subscriptions_response):
             })
 
     return channels
-
-
-if __name__ == "__main__":
-    # init
-    all_channels = []
-
-    print('Perform youtube subscriptions')
-    # retrieve subscriptions
-    all_channels = retrieve_youtube_subscriptions()
-    print('Subscriptions complete')
-    print('Subscriptions found: {}'.format(len(all_channels)))
-
-    print("Channels:\n", "\n".join(all_channels), "\n")
