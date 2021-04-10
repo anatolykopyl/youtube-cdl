@@ -12,6 +12,8 @@ This tool is very handy if you want to hoard a lot of videos, but not all of the
 git clone https://github.com/anatolykopyl/youtube-cdl.git
 cd youtube-cdl
 pip install -r requirements.txt
+# If on windows instead run
+# pip install -r windows.txt
 ```
 2. Create or select a project in the [API Console](https://console.developers.google.com/). 
 Complete the following tasks in the API Console for your project:
