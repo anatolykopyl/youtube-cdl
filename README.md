@@ -20,28 +20,21 @@ Complete the following tasks in the API Console for your project:
     search for the YouTube Data API v3. Click into the listing for that API and make 
     sure the API is enabled for your project.
 
-    2. In the [credentials panel](https://console.developers.google.com/apis/credentials), 
-    create two credentials:
-
-        * **Create an API key.** You will use the API key to make API requests that 
-        do not require user authorization. For example, you do not need user 
-        authorization to retrieve information about a public YouTube channel.
-        * **Create an OAuth client ID.** 
+    2. In the [credentials panel](https://console.developers.google.com/apis/credentials), create an **OAuth client ID.** 
             
-            This will need you to configure your 
-            consent screen:
+        This will need you to configure your consent screen:
 
-            * Only "App name", "User support email" and "Developer contact email" fields are required. 
-            * On "Test users" step add yourself (your email address)
+        * Only "App name", "User support email" and "Developer contact email" fields are required. 
+        * On "Test users" step add yourself (your email address).
 
-            After you've set up your consent screen go back to the "Credentials" tab
-            and press "Create credentials".
+        After you've set up your consent screen go back to the "Credentials" tab
+        and create OAuth Client ID credentials.
 
-            Set the application type to Desktop App.
+        Set the application type to Desktop App.
 
-            Download the JSON file that contains your OAuth 2.0 credentials. The file 
-            has a name like client_secret_CLIENTID.json, where CLIENTID is the client ID 
-            for your project.
+        Download the JSON file that contains your OAuth 2.0 credentials. The file 
+        has a name like client_secret_CLIENTID.json, where CLIENTID is the client ID 
+        for your project.
 
 3. Rename the downloaded file to `client_secrets.json` and put it in the project root.
 
