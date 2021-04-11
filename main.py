@@ -5,6 +5,7 @@ from pathlib import Path
 import os
 import json
 import argparse
+import logging
 import youtube_dl
 from get_channels import retrieve_youtube_subscriptions
 from print_logo import print_logo
@@ -48,7 +49,8 @@ download_all = args.all
 
 c = Console()
 ydl_opts = {
-    'format': 'best'
+    'format': 'best',
+    'ignoreerrors': True
 }
 
 print_logo()
@@ -80,7 +82,7 @@ else:
                 else:
                     c.print('Press "y" or "n"', style='yellow')
 
-    c.print('All done! 🎉')
+    c.print('All done! :party_popper:', style='green')
     c.print('Saving to download_list.json...', style='italic')
     f = open("download_list.json", "w", encoding='utf-8')
     f.write(json.dumps(all_channels, indent=4))
