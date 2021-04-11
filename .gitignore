@@ -4,5 +4,5 @@ venv/
 client_secret*.json
 *-oauth2.json
 
-output.json
+download_list.json
 output/

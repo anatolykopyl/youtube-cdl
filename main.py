@@ -83,7 +83,7 @@ else:
     c.print('All done! 🎉')
     c.print('Saving to download_list.json...', style='italic')
     f = open("download_list.json", "w", encoding='utf-8')
-    f.write(json.dumps(all_channels))
+    f.write(json.dumps(all_channels, indent=4))
     f.close()
 
 for ch in all_channels:
