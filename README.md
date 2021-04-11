@@ -67,7 +67,7 @@ will be saved in `download_list.json`.
 
 If for some reason you stopped the script, you can 
 continue downloading without going through all of your subscriptions again by running 
-`python main -i download_list.json`. 
+`python main.py -i download_list.json`. 
 
 Or if you made a mistake while going through the channels you can just edit `download_list.json` 
 and rerun with it passed as an argument.
