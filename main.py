@@ -11,8 +11,24 @@ from print_logo import print_logo
 
 if platform.system() == 'Windows':
 	import msvcrt
+	def uni_getch():
+		char = str(msvcrt.getch())
+		if char == "b'y'":
+			return True
+		elif char == "b'n'":
+			return False
+		else:
+			return None
 else:
 	from getch import getch
+	def uni_getch():
+		char = getch()
+		if char == "y":
+			return True
+		elif char == "n":
+			return False
+		else:
+			return None
 
 parser = argparse.ArgumentParser()
 parser.add_argument('-i', '--input', action='store', type=str, 
@@ -50,26 +66,15 @@ else:
 			curr_channel += 1
 			c.print(f'[dim][{curr_channel}/{len(all_channels)}]:[/dim] {ch["title"]} [cyan]\[y/n]')
 			while True:
-				if platform.system() == 'Windows':
-					key = str(msvcrt.getch())
-					if key == "b'y'":
-						ch['download'] = True
-						break
-					elif key == "b'n'":
-						ch['download'] = False
-						break
-					else:
-						c.print('Press "y" or "n"', style='yellow')
+				key = uni_getch()
+				if key == True:
+					ch['download'] = True
+					break
+				elif key == False:
+					ch['download'] = False
+					break
 				else:
-					key = getch()
-					if key == "y":
-						ch['download'] = True
-						break
-					elif key == "n":
-						ch['download'] = False
-						break
-					else:
-						c.print('Press "y" or "n"', style='yellow')
+					c.print('Press "y" or "n"', style='yellow')
 
 	c.print('All done! 🎉')
 	c.print('Saving to download_list.json...', style='italic')
