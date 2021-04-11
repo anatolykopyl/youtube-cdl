@@ -34,6 +34,7 @@ https://developers.google.com/api-client-library/python/guide/aaa_client_secrets
 """.format(os.path.abspath(os.path.join(os.path.dirname(__file__),
                                         CLIENT_SECRETS_FILE)))
 
+
 def retrieve_youtube_subscriptions():
     # In order to retrieve the YouTube subscriptions for the current user,
     # the user needs to authenticate and authorize access to their YouTube
@@ -45,24 +46,27 @@ def retrieve_youtube_subscriptions():
         all_channels = []
         next_page_token = ''
 
-        subscriptions_response = youtube_subscriptions(youtube_authorization, next_page_token)
+        subscriptions_response = youtube_subscriptions(
+            youtube_authorization, next_page_token)
         total_results = subscriptions_response['pageInfo']['totalResults']
         results_per_page = subscriptions_response['pageInfo']['resultsPerPage']
         total_iterations = math.ceil(total_results / results_per_page)
 
         for _ in track(range(total_iterations), description='Fetching subscriptions'):
             # retrieve the YouTube subscriptions for the authorized user
-            subscriptions_response = youtube_subscriptions(youtube_authorization, next_page_token)
+            subscriptions_response = youtube_subscriptions(
+                youtube_authorization, next_page_token)
             next_page_token = get_next_page(subscriptions_response)
             # extract the required subscription information
             channels = parse_youtube_subscriptions(subscriptions_response)
             # add the channels relieved to the main channel list
             all_channels.extend(channels)
-            
+
         return all_channels
 
     except HttpError as err:
-        print("An HTTP error {} occurred:\n{}".format(err.resp.status, err.content))
+        print("An HTTP error {} occurred:\n{}".format(
+            err.resp.status, err.content))
 
 
 def get_authenticated_service():
@@ -92,8 +96,6 @@ def get_authenticated_service():
                  http=credentials.authorize(httplib2.Http()))
 
 
-# Call youtube.subscriptions.list method
-# to list the channels subscribed to.
 def youtube_subscriptions(youtube, next_page_token):
     subscriptions_response = youtube.subscriptions().list(
         part='snippet',
@@ -120,8 +122,6 @@ def parse_youtube_subscriptions(subscriptions_response):
     # Add each result to the appropriate list
     for subscriptions_result in subscriptions_response.get("items", []):
         if subscriptions_result["snippet"]["resourceId"]["kind"] == "youtube#channel":
-            #channels.append("{} ({})".format(subscriptions_result["snippet"]["title"],
-            #                                 subscriptions_result["snippet"]["resourceId"]["channelId"]))
             channels.append({
                 'title': subscriptions_result["snippet"]["title"],
                 'id': subscriptions_result["snippet"]["resourceId"]["channelId"]
