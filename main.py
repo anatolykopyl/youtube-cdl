@@ -3,6 +3,7 @@ from rich.console import Console
 import platform
 from pathlib import Path
 import os
+import sys
 import json
 import argparse
 import logging
@@ -48,10 +49,29 @@ output_dir = args.output or 'output'
 download_all = args.all
 
 c = Console()
+
+
+def prg_hook(d):
+    if d['status'] == 'finished':
+        sys.stdout.write("\033[F")
+        sys.stdout.write("\033[K")
+        c.print(
+            ':white_check_mark: {}\n'.format(d['filename']))
+    if d['status'] == 'downloading':
+        sys.stdout.write("\033[F")
+        sys.stdout.write("\033[K")
+        c.print(':arrow_down_small: {} {} {}'.format(d['filename'],
+                d['_percent_str'], d['_eta_str']))
+
+
 ydl_opts = {
     'format': 'best',
-    'ignoreerrors': True
+    'ignoreerrors': True,
+    'continuedl': True,
+    'quiet': True,
+    'progress_hooks': [prg_hook]
 }
+
 
 print_logo()
 
@@ -90,6 +110,8 @@ else:
 
 for ch in all_channels:
     if ch['download']:
+        # line break so that download status won't clear this
+        c.print('Downloading {}\n'.format(ch['title']), style='bold cyan')
         ydl_opts['outtmpl'] = '{}/{}/%(title)s.%(ext)s'.format(
             output_dir, ch['title'])
         with youtube_dl.YoutubeDL(ydl_opts) as ydl:
