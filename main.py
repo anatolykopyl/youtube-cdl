@@ -5,6 +5,7 @@ from pathlib import Path
 import os
 import sys
 import json
+import re
 import argparse
 import logging
 import youtube_dl
@@ -55,15 +56,17 @@ c = Console()
 
 
 def prg_hook(d):
+    _filename = d['filename'].replace(
+        os.path.join(output_dir, ch['title'])+'/', '')
     if d['status'] == 'finished':
         sys.stdout.write("\033[F")
         sys.stdout.write("\033[K")
         c.print(
-            ':white_check_mark: {}\n'.format(d['filename']))
+            ':white_check_mark: {}\n'.format(_filename))
     if d['status'] == 'downloading':
         sys.stdout.write("\033[F")
         sys.stdout.write("\033[K")
-        c.print(':arrow_down_small: {} {} {}'.format(d['filename'],
+        c.print(':arrow_down_small: {} {} {}'.format(_filename,
                 d['_percent_str'], d['_eta_str']))
 
 
