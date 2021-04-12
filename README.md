@@ -52,6 +52,11 @@ python main.py
 python main.py
 ```
 
+* Specify format [like in youtube-dl](https://github.com/ytdl-org/youtube-dl#user-content-format-selection-examples):
+```bash
+python main.py -f 'bestaudio/best'
+```
+
 * Download all the videos from all channels you're subscribed to:
 ```bash
 python main.py -a

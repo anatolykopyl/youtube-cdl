@@ -41,12 +41,15 @@ parser.add_argument('-o', '--output', action='store', type=str,
                     help='Output folder.')
 parser.add_argument('-a', '--all', action='store_true',
                     help='Download all subscriptions.')
+parser.add_argument('-f', '--format', action='store', type=str, default='best',
+                    help='Format to pass to youtube-dl. (default: best)')
 
 args = parser.parse_args()
 
 json_input = args.input
 output_dir = args.output or 'output'
 download_all = args.all
+dl_format = args.format
 
 c = Console()
 
@@ -65,7 +68,7 @@ def prg_hook(d):
 
 
 ydl_opts = {
-    'format': 'best',
+    'format': dl_format,
     'ignoreerrors': True,
     'continuedl': True,
     'quiet': True,
