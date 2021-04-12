@@ -5,9 +5,7 @@ from pathlib import Path
 import os
 import sys
 import json
-import re
 import argparse
-import logging
 import youtube_dl
 from get_channels import retrieve_youtube_subscriptions
 from print_logo import print_logo
