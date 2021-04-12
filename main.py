@@ -120,5 +120,11 @@ for ch in all_channels:
         with youtube_dl.YoutubeDL(ydl_opts) as ydl:
             Path(os.path.join(output_dir, ch['title'])).mkdir(
                 parents=True, exist_ok=True)
-            ydl.download(
-                ['https://www.youtube.com/channel/{}'.format(ch["id"])])
+            try:
+                ydl.download(
+                    ['https://www.youtube.com/channel/{}'.format(ch["id"])])
+            except KeyboardInterrupt:
+                c.print('\nGoodbye!', style='orange1')
+                c.print(
+                    'Start where you left off with "python main.py -i download_list.json"')
+                sys.exit()
