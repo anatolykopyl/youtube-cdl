@@ -12,7 +12,7 @@ from rich.progress import track
 
 CLIENT_SECRETS_FILE = "client_secrets.json"
 
-YOUTUBE_READ_WRITE_SCOPE = "https://www.googleapis.com/auth/youtube"
+YOUTUBE_READ_SCOPE = "https://www.googleapis.com/auth/youtube"
 YOUTUBE_API_SERVICE_NAME = "youtube"
 YOUTUBE_API_VERSION = "v3"
 
@@ -35,11 +35,11 @@ https://developers.google.com/api-client-library/python/guide/aaa_client_secrets
                                         CLIENT_SECRETS_FILE)))
 
 
-def retrieve_youtube_subscriptions():
+def retrieve_youtube_subscriptions(args):
     # In order to retrieve the YouTube subscriptions for the current user,
     # the user needs to authenticate and authorize access to their YouTube
     # subscriptions.
-    youtube_authorization = get_authenticated_service()
+    youtube_authorization = get_authenticated_service(args)
 
     try:
         # init
@@ -69,7 +69,7 @@ def retrieve_youtube_subscriptions():
             err.resp.status, err.content))
 
 
-def get_authenticated_service():
+def get_authenticated_service(args):
     # Create a Storage instance to store and retrieve a single
     # credential to and from a file. Used to store the
     # oauth2 credentials for the current python script.
@@ -80,15 +80,16 @@ def get_authenticated_service():
     if credentials is None or credentials.invalid:
         # Create a Flow instance from a client secrets file
         flow = flow_from_clientsecrets(CLIENT_SECRETS_FILE,
-                                       scope=YOUTUBE_READ_WRITE_SCOPE,
+                                       scope=YOUTUBE_READ_SCOPE,
                                        message=MISSING_CLIENT_SECRETS_MESSAGE)
-        # The run_flow method requires arguments.
-        # Initial default arguments are setup in tools, and any
-        # additional arguments can be added from the command-line
-        # and passed into this method.
-        args = argparser.parse_args()
+
+        oauth_args = argparser.parse_args(args=[])
+        oauth_args.auth_host_name = args.auth_host_name
+        oauth_args.auth_host_port = [args.auth_host_port]
+        oauth_args.noauth_local_webserver = args.noauth_local_webserver
+
         # Obtain valid credentials
-        credentials = run_flow(flow, storage, args)
+        credentials = run_flow(flow, storage, oauth_args)
 
     # Build and return a Resource object for interacting with an YouTube API
     return build(YOUTUBE_API_SERVICE_NAME,

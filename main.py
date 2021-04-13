@@ -43,6 +43,14 @@ parser.add_argument('-a', '--all', action='store_true',
 parser.add_argument('-f', '--format', action='store', type=str, default='best',
                     help='Format to pass to youtube-dl. (default: best)')
 
+# oauth2client.tools.run_flow arguments
+parser.add_argument('--auth_host_name', action='store', type=str, default='localhost',
+                    help='Host name to use when running a local web server to handle redirects during OAuth authorization.')
+parser.add_argument('--auth_host_port', action='store', type=int, default=8080,
+                    help='Port to use when running a local web server to handle redirects during OAuth authorization.')
+parser.add_argument('--noauth_local_webserver', action='store_true',
+                    help='Run a local web server to handle redirects during OAuth authorization.')
+
 args = parser.parse_args()
 
 json_input = args.input
@@ -84,7 +92,7 @@ if json_input:
     all_channels = json.loads(f.read())
     f.close()
 else:
-    all_channels = retrieve_youtube_subscriptions()
+    all_channels = retrieve_youtube_subscriptions(args)
     curr_channel = 0
     c.print(
         f'You will be prompted if you want to download a channel for each of your subscriptions. (total {len(all_channels)})', style='bold')
