@@ -42,6 +42,8 @@ parser.add_argument('-a', '--all', action='store_true',
                     help='Download all subscriptions.')
 parser.add_argument('-f', '--format', action='store', type=str, default='best',
                     help='Format to pass to youtube-dl. (default: best)')
+parser.add_argument('--download_archive', action='store', type=str,
+                    help='Download only videos not listed in the archive file. Record the IDs of all downloaded videos in it.')
 
 # oauth2client.tools.run_flow arguments
 parser.add_argument('--auth_host_name', action='store', type=str, default='localhost',
@@ -57,6 +59,7 @@ json_input = args.input
 output_dir = args.output or 'output'
 download_all = args.all
 dl_format = args.format
+dl_archive = args.download_archive
 
 c = Console()
 
@@ -78,6 +81,7 @@ def prg_hook(d):
 
 ydl_opts = {
     'format': dl_format,
+    'download_archive': dl_archive,
     'ignoreerrors': True,
     'continuedl': True,
     'quiet': True,
