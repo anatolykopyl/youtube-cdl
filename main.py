@@ -65,8 +65,12 @@ c = Console()
 
 
 def prg_hook(d):
-    _filename = d['filename'].replace(
-        os.path.join(output_dir, ch['title'])+'/', '')
+    _filedir = os.path.join(output_dir, ch['title'])+'/'
+    if platform.system() == 'Windows':
+        _filedir = _filedir.replace('/', '\\')
+
+    _filename = d['filename'].replace(_filedir, '')
+
     if d['status'] == 'finished':
         sys.stdout.write("\033[F")
         sys.stdout.write("\033[K")
